@@ -41,7 +41,9 @@ annotate sm.Stationery with @(
 
 
 
-
+annotate sm.Stationery @(
+  Common.SemanticKey : [value]
+);
 
 
 
