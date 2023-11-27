@@ -30,7 +30,6 @@ annotate sm.Stationery with @(
 );
 
 annotate sm.Stationery with @odata.draft.enabled;
-annotate sm.Employees with @odata.draft.enabled;
 
 
 annotate sm.Stationery with @(
@@ -41,8 +40,20 @@ annotate sm.Stationery with @(
 
 
 
+
 annotate sm.Stationery @(
-  Common.SemanticKey : [value]
+    UI.Chart #Chart1 : {
+    $Type : 'UI.ChartDefinitionType',
+    Title : 'Revenue by Customer',
+    Description : 'Net Revenue by Customer',
+    ChartType : #Column,
+    Dimensions : [
+        cost
+    ],
+    Measures : [
+        items
+    ],
+}
 );
 
 
