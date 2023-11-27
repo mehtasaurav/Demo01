@@ -1,0 +1,5 @@
+Emp_ID,name,email,phone,manager
+E001,John Doe,john.doe@example.com,1234567890,Manager1
+E002,Jane Smith,jane.smith@example.com,9876543210,Manager2
+E003,Michael Johnson,michael.johnson@example.com,3456789012,Manager3
+E004,Emily Davis,emily.davis@example.com,7890123456,Manager4

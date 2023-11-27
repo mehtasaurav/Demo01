@@ -1,0 +1,9 @@
+ID,items,desc,value,cost,currency_Code,employee_Emp_ID
+1,Pen,Blue Pen Pack of 5,5,2.50,USD,E001
+2,Notebook,A5 Spiral Notebook,2,4.00,USD,E002
+3,Stapler,Office Stapler,1,8.99,USD,E003
+4,Markers,Assorted Color Markers Set,3,6.75,USD,E004
+5,Notebook,A4 Hardcover Notebook,2,5.50,USD,E001
+6,Pen,Black Pen Pack of 5,5,2.50,USD,E002
+7,Staples,Box of Staples,1,1.99,USD,E003
+8,Pencil,Pack of 10 HB Pencils,5,3.99,USD,E004

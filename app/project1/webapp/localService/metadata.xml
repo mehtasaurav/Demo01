@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="Capabilities" />
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1" />
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1" />
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1" />
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="MyService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Stationery" EntityType="MyService.Stationery">
+                    <NavigationPropertyBinding Path="currency" Target="Currencies" />
+                    <NavigationPropertyBinding Path="employee" Target="Employees" />
+                </EntitySet>
+                <EntitySet Name="Employees" EntityType="MyService.Employees">
+                    <NavigationPropertyBinding Path="stationery" Target="Stationery" />
+                </EntitySet>
+                <EntitySet Name="Currencies" EntityType="MyService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts" />
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts" />
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="MyService.Currencies_texts" />
+            </EntityContainer>
+            <EntityType Name="Stationery">
+                <Key>
+                    <PropertyRef Name="ID" />
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false" />
+                <Property Name="items" Type="Edm.String" MaxLength="100" />
+                <Property Name="desc" Type="Edm.String" />
+                <Property Name="value" Type="Edm.Int32" />
+                <Property Name="cost" Type="Edm.Decimal" Scale="2" Precision="9" />
+                <NavigationProperty Name="currency" Type="MyService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code" />
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3" />
+                <NavigationProperty Name="employee" Type="MyService.Employees" Partner="stationery">
+                    <ReferentialConstraint Property="employee_Emp_ID" ReferencedProperty="Emp_ID" />
+                </NavigationProperty>
+                <Property Name="employee_Emp_ID" Type="Edm.Guid" />
+            </EntityType>
+            <EntityType Name="Employees">
+                <Key>
+                    <PropertyRef Name="Emp_ID" />
+                </Key>
+                <Property Name="Emp_ID" Type="Edm.Guid" Nullable="false" />
+                <Property Name="name" Type="Edm.String" MaxLength="100" />
+                <Property Name="email" Type="Edm.String" MaxLength="100" />
+                <Property Name="phone" Type="Edm.Int64" />
+                <Property Name="manager" Type="Edm.String" MaxLength="100" />
+                <NavigationProperty Name="stationery" Type="Collection(MyService.Stationery)" Partner="employee" />
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code" />
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255" />
+                <Property Name="descr" Type="Edm.String" MaxLength="1000" />
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false" />
+                <Property Name="symbol" Type="Edm.String" MaxLength="5" />
+                <Property Name="minorUnit" Type="Edm.Int16" />
+                <NavigationProperty Name="texts" Type="Collection(MyService.Currencies_texts)">
+                    <OnDelete Action="Cascade" />
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="MyService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code" />
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale" />
+                    <PropertyRef Name="code" />
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false" />
+                <Property Name="name" Type="Edm.String" MaxLength="255" />
+                <Property Name="descr" Type="Edm.String" MaxLength="1000" />
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false" />
+            </EntityType>
+            <Annotations Target="MyService.Stationery/ID">
+                <Annotation Term="Core.Computed" Bool="true" />
+            </Annotations>
+            <Annotations Target="MyService.Stationery/currency">
+                <Annotation Term="Common.Label" String="{i18n>Currency}" />
+                <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}" />
+            </Annotations>
+            <Annotations Target="MyService.Stationery/currency_code">
+                <Annotation Term="Common.Label" String="{i18n>Currency}" />
+                <Annotation Term="Common.ValueList">
+                    <Record Type="Common.ValueListType">
+                        <PropertyValue Property="Label" String="{i18n>Currency}" />
+                        <PropertyValue Property="CollectionPath" String="Currencies" />
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterInOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code" />
+                                    <PropertyValue Property="ValueListProperty" String="code" />
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="name" />
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}" />
+            </Annotations>
+            <Annotations Target="MyService.Employees/Emp_ID">
+                <Annotation Term="Core.Computed" Bool="true" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies">
+                <Annotation Term="UI.Identification">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="name" />
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="MyService.Currencies/name">
+                <Annotation Term="Common.Label" String="{i18n>Name}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies/descr">
+                <Annotation Term="Common.Label" String="{i18n>Description}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies/code">
+                <Annotation Term="Common.Text" Path="name" />
+                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies/symbol">
+                <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies/minorUnit">
+                <Annotation Term="Common.Label" String="{i18n>CurrencyMinorUnit}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies_texts/locale">
+                <Annotation Term="Common.Label" String="{i18n>LanguageCode}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies_texts/name">
+                <Annotation Term="Common.Label" String="{i18n>Name}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies_texts/descr">
+                <Annotation Term="Common.Label" String="{i18n>Description}" />
+            </Annotations>
+            <Annotations Target="MyService.Currencies_texts/code">
+                <Annotation Term="Common.Text" Path="name" />
+                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}" />
+            </Annotations>
+            <Annotations Target="MyService.Stationery">
+                <Annotation Term="UI.HeaderInfo">
+                    <Record>
+                        <PropertyValue Property="TypeName" String="Stationary" />
+                        <PropertyValue Property="TypeNamePlural" String="Stationary" />
+                    </Record>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

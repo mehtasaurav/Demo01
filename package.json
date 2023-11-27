@@ -1,0 +1,40 @@
+{
+  "name": "Demo01",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1.4.0",
+    "@sap/ux-specification": "^1.108.18"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-kamal-app": "cds watch --open kamal-app/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-fiori-app": "cds watch --open fiori-app/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": ":memory:"
+        }
+      }
+    },
+    "features": {
+      "in_memory_db": true
+    }
+  },
+  "sapux": [
+    "app/kamal-app",
+    "app/fiori-app",
+    "app/project1"
+  ]
+}
